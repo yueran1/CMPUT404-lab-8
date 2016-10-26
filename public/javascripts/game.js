@@ -22,31 +22,3 @@ function rabbitDragged() {
     this.client.ws.send(JSON.stringify({x: sprite.x, y: sprite.y}));
   }
 }
-
-function Client() {
-
-}
-
-Client.prototype.openConnection = function() {
-  this.ws = new WebSocket("ws://127.0.0.1:8080");
-  this.connected = false;
-  this.ws.onmessage = this.onMessage.bind(this);
-  this.ws.onerror = this.displayError.bind(this);
-  this.ws.onopen = this.connectionOpen.bind(this);
-};
-
-Client.prototype.connectionOpen = function() {
-  this.connected = true;
-  myText.text = 'connected\n';
-};
-
-Client.prototype.onMessage = function(message) {
-  myText.text = myText.text + message.data;
-  var msg = JSON.parse(message.data);
-  sprite.x = msg.x;
-  sprite.y = msg.y;
-};
-
-Client.prototype.displayError = function(err) {
-  console.log('Websocketerror: ' + err);
-};
